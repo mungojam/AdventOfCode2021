@@ -14,9 +14,9 @@ public static class AdventOfCode
             .Select(int.Parse)
             .ToImmutableArray();
 
-    public static void PrintAnswer(object obj)
+    public static void PrintAnswer(int part, object obj)
     {
-        Console.WriteLine("Answer is:");
+        Console.WriteLine($"Part {part} answer is:");
         Console.Write(obj);
         Console.ReadLine();
     }

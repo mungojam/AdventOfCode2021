@@ -1,9 +1,24 @@
-﻿
+﻿using System.Collections.Immutable;
+using static Common.AdventOfCode;
 
-using Common;
+var input = LoadInputs(1);
 
-var input = AdventOfCode.LoadInputs(1);
+PrintAnswer(1, Part1());
+PrintAnswer(2, Part2());
 
-var answer = input.Zip(input.Skip(1)).Count(x => x.Second > x.First);
+int Part1() => CountAscending(input);
+int Part2()
+{
+    var rollingSum = 
+        input.Zip(input.Skip(1), input.Skip(2))
+             .Select(x=>x.First + x.Second + x.Third)
+             .ToImmutableArray();
 
-AdventOfCode.PrintAnswer(answer);
+    return CountAscending(rollingSum);
+}
+
+int CountAscending(ImmutableArray<int> immutableArray)
+{
+    return immutableArray.Zip(immutableArray.Skip(1)).Count(x => x.Second > x.First);
+}
+
