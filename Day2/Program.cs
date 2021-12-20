@@ -11,41 +11,70 @@ var input = LoadInputs(2, line =>
 });
 
 PrintAnswer(1, Part1());
+PrintAnswer(2, Part2());
 
 int Part1()
 {
     var initialPosition = new Position();
-    
-    var finalPosition = input.Aggregate(initialPosition, (position, move) => position + move);
 
-    return finalPosition.Depth * finalPosition.Horizontal;
+    var (depth, horizontal) = input.Aggregate(initialPosition, ApplyNaiveCourseCorrection);
+
+    return depth * horizontal;
 }
 
+int Part2()
+{
+    var initialPosition = new PositionAndAim();
 
+    var (depth, horizontal, _) = input.Aggregate(initialPosition, ApplyCourseCorrection);
+
+    return depth * horizontal;
+}
+
+static Position ApplyNaiveCourseCorrection(Position position, CourseCorrection courseCorrection)
+{
+    var (depthChange, horizontalChange, _) = courseCorrection.AsNaiveChange();
+
+    var (depth, horizontal) = position;
+    return new Position(depth + depthChange, horizontal + horizontalChange);
+}
+
+static PositionAndAim ApplyCourseCorrection(PositionAndAim position, CourseCorrection courseCorrection)
+{
+    var (direction, quantity) = courseCorrection;
+    
+    var (depthChange, horizontalChange, aimChange) = direction switch
+    {
+        Forward => new PositionChange(quantity * position.Aim, quantity, 0),
+        Down => new PositionChange(0, 0, quantity),
+        Up => new PositionChange(0, 0, -quantity),
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    var (depth, horizontal, aim) = position;
+    return new PositionAndAim(depth + depthChange, horizontal + horizontalChange, aim + aimChange);
+}
 
 internal record CourseCorrection(Direction Direction, int Quantity)
 {
-    public PositionChange AsChange() =>
+    public PositionChange AsNaiveChange() =>
         Direction switch
         {
-            Forward => new PositionChange(0, Quantity),
-            Down => new PositionChange(Quantity, 0),
-            Up => new PositionChange(-Quantity, 0),
+            Forward => new PositionChange(0, Quantity, 0),
+            Down => new PositionChange(Quantity, 0, 0),
+            Up => new PositionChange(-Quantity, 0, 0),
             _ => throw new ArgumentOutOfRangeException()
         };
 }
 
-internal record PositionChange(int Depth, int Horizontal);
 
-internal record Position(int Depth = 0, int Horizontal = 0)
-{
-    public static Position operator +(Position position1, CourseCorrection courseCorrection)
-    {
-        var (depthChange, horizontalChange) = courseCorrection.AsChange();
 
-        return new Position(position1.Depth + depthChange, position1.Horizontal + horizontalChange);
-    }
-}
+internal record PositionChange(int Depth, int Horizontal, int Aim);
+
+internal record PositionAndAim(int Depth = 0, int Horizontal = 0, int Aim = 0);
+
+internal record Position(int Depth = 0, int Horizontal = 0);
+
 
 enum Direction
 {
