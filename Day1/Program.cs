@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using static Common.AdventOfCode;
 
-var input = LoadInputs(1);
+var input = LoadIntInputs(1);
 
 PrintAnswer(1, Part1());
 PrintAnswer(2, Part2());

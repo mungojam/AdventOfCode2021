@@ -9,9 +9,12 @@ public static class AdventOfCode
 
     private static readonly string InputsFolder = Path.Combine(AssemblyFolder, "Inputs");
     
-    public static ImmutableArray<int> LoadInputs(int day) => 
+    public static ImmutableArray<int> LoadIntInputs(int day) => 
+        LoadInputs(day, int.Parse);
+    
+    public static ImmutableArray<T> LoadInputs<T>(int day, Func<string, T> inputSelector) => 
         File.ReadAllLines(Path.Combine(InputsFolder, $"Day{day}.txt"))
-            .Select(int.Parse)
+            .Select(inputSelector)
             .ToImmutableArray();
 
     public static void PrintAnswer(int part, object obj)
