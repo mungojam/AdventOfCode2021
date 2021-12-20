@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using static Common.AdventOfCode;
+﻿using static Common.AdventOfCode;
 
 var input = LoadIntInputs(1);
 
