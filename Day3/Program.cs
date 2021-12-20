@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-var input = LoadInputs(3,
+﻿var input = LoadInputs(3,
     line =>
         line.Select(
             x => x == '1'
@@ -9,26 +7,74 @@ var input = LoadInputs(3,
 
 var numBits = input.First().Length;
 
+var allBits = Range(0, numBits)
+                                       .ToImmutableArray();
+
+
 PrintAnswer(1, Part1());
+PrintAnswer(2, Part2());
 
 int Part1()
 {
-    var halfSamples = input.Length / 2.0;
+    
 
-    var gammaBits = Enumerable.Range(0, numBits)
-        .Select(bitNum => input.Count(sample => sample[bitNum]) >= halfSamples)
+    var gammaBits = allBits
+        .Select(bitNum => IsMostlyTrue(bitNum, input))
         .ToBitArray();
 
     var epsilonBits = gammaBits.Duplicate().Not();
-
+    
     var result = gammaBits.ToInteger() * epsilonBits.ToInteger();
 
     return result;
 }
 
+bool IsMostlyTrue(int bitNum, ImmutableArray<BitArray> samples)
+{
+    var halfSamples = samples.Length / 2.0;
+    return samples.Count(sample => sample[bitNum]) >= halfSamples;
+}
+
+bool IsMostly(bool value, int bitNum, ImmutableArray<BitArray> samples)
+{
+    return IsMostlyTrue(bitNum, samples) == value;
+}
+
+int Part2()
+{
+    var oxygen = DerivedCalc(true);
+    var co2 = DerivedCalc(false);
+
+    return oxygen * co2;
+
+    int DerivedCalc(bool lookFor)
+    {
+        var singleSampleNumber = allBits.Aggregate(
+            input, 
+            (remainingSamples, bitNum) =>
+            {
+                if (remainingSamples.Length == 1)
+                {
+                    return remainingSamples;
+                }
+                
+                var target = IsMostly(lookFor, bitNum, remainingSamples);
+                
+                return remainingSamples
+                    .Where(sample => sample[bitNum] == target)
+                    .ToImmutableArray();
+                
+            }).Single();
+
+        var answer = singleSampleNumber.ToInteger();
+        
+        return answer;
+    }
+}
+
 internal static class Extensions
 {
-    public static BitArray Duplicate(this BitArray array) => new BitArray(array);
+    public static BitArray Duplicate(this BitArray array) => new(array);
     
     public static BitArray ToBitArray(this IEnumerable<bool> array) => new(array.ToArray());
 
