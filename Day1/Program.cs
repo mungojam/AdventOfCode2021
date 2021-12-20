@@ -1,6 +1,4 @@
-﻿using static Common.AdventOfCode;
-
-var input = LoadIntInputs(1);
+﻿var input = LoadIntInputs(1);
 
 PrintAnswer(1, Part1());
 PrintAnswer(2, Part2());

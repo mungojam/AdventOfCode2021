@@ -2,6 +2,9 @@
     <PropertyGroup />
     <ItemGroup>
         <Using Include="System.Collections.Immutable" />
-        <ProjectReference Condition="'$(AssemblyName)'!='Common'" Include="../Common/Common.csproj" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(AssemblyName)'!='Common'">
+        <ProjectReference Include="../Common/Common.csproj" />
+        <Compile Include="../*.cs" />
     </ItemGroup>
 </Project>

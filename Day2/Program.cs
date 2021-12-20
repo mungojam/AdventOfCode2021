@@ -1,5 +1,4 @@
-﻿using static Common.AdventOfCode;
-using static Direction;
+﻿using static Direction;
 
 var input = LoadInputs(2, line =>
 {

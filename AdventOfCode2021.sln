@@ -12,7 +12,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{0E31E044-4B2B-48AB-8947-C89AD1C444EB}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		AdventOfCode.cs = AdventOfCode.cs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day3", "Day3\Day3.csproj", "{F9B49C99-8EE2-441C-A47D-285852DDA4F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +38,9 @@ Global
 		{5B7490BF-2F24-4D8C-BB97-E38EA7F066E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B7490BF-2F24-4D8C-BB97-E38EA7F066E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B7490BF-2F24-4D8C-BB97-E38EA7F066E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B49C99-8EE2-441C-A47D-285852DDA4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B49C99-8EE2-441C-A47D-285852DDA4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B49C99-8EE2-441C-A47D-285852DDA4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B49C99-8EE2-441C-A47D-285852DDA4F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
