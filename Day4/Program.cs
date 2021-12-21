@@ -70,6 +70,5 @@ int BoardScore(ImmutableArray<ImmutableArray<(int number, int order)>> board, in
 
     var winningNumber = called[boardResult].number;
 
-    var answer2 = sumUnmarked * winningNumber;
-    return answer2;
+    return sumUnmarked * winningNumber;
 }
