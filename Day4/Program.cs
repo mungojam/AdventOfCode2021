@@ -33,20 +33,22 @@ ImmutableArray<ImmutableArray<(int number, int order)>> AddOrderToBoard(
         boardRow.Select(cell => (number: cell, order: calledLookup.GetValueOrDefault(cell, int.MaxValue)))
             .ToImmutableArray()).ToImmutableArray();
 
-var bestBoardResult = boardsWithOrder
+var boardResults = boardsWithOrder
     .Select(board => (board, result: GetBestBoardResult(board)))
+    .ToImmutableArray();
+
+var (winningBoard, bestScore) = boardResults
     .MinBy(boardResult => boardResult.result);
 
-var sumUnmarked = bestBoardResult.board
-    .SelectMany(x => x)
-    .Where(x => x.order > bestBoardResult.result)
-    .Sum(x => x.number);
+var (lastWinningBoard, worstScore) = boardResults
+    .Where(x => x.result < int.MaxValue)
+    .MaxBy(x => x.result);
 
-var winningNumber = called[bestBoardResult.result].number;
-
-var answer1 = sumUnmarked * winningNumber;
+var answer1 = BoardScore(winningBoard, bestScore);
+var answer2 = BoardScore(lastWinningBoard, worstScore);
 
 PrintAnswer(1, answer1);
+PrintAnswer(2, answer2);
 
 
 int GetBestBoardResult(ImmutableArray<ImmutableArray<(int number, int order)>> boardWithOrder)
@@ -57,4 +59,17 @@ int GetBestBoardResult(ImmutableArray<ImmutableArray<(int number, int order)>> b
     var best = Math.Min(bestRowResult, bestColResult);
 
     return best;
+}
+
+int BoardScore(ImmutableArray<ImmutableArray<(int number, int order)>> board, int boardResult)
+{
+    var sumUnmarked = board
+        .SelectMany(x => x)
+        .Where(x => x.order > boardResult)
+        .Sum(x => x.number);
+
+    var winningNumber = called[boardResult].number;
+
+    var answer2 = sumUnmarked * winningNumber;
+    return answer2;
 }
